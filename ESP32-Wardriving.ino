@@ -5,9 +5,9 @@
 #include <HardwareSerial.h>
 
 #define UTC_offset -5   // EST
-#define SD_CS 29        // VSPI SS Pin (for SD Card)
-#define TX2 17          // Transmit Pin (for GPS)
-#define RX2 16          // Recieve Pin (for GPS)
+//#define SD_CS 29        // VSPI SS Pin (for SD Card)
+//#define TX2 17          // Transmit Pin (for GPS)
+//#define RX2 16          // Recieve Pin (for GPS)
 #define LOG_RATE 50    // How often to log (milliseconds)
 char currentTime[5];
 
@@ -16,10 +16,10 @@ int networks = 0;
 
 // fill out these pins and set it up and stuff (SPI)
 #define REASSIGN_PINS
-int sck = -1;
-int miso = -1;
-int mosi = -1;
-int cs = -1;
+int sck = 18;
+int miso = 19;
+int mosi = 23;
+int cs = 5;
 
 HardwareSerial SerialGPS(2); // GPS UART on Serial 2
 TinyGPSPlus tinyGPS;
@@ -36,9 +36,10 @@ void setup() {
   Serial.println("Starting Wardriver...");
 
   /* Initialize SD Card Reader */
-  if (!SD.begin(SD_CS)) {
+  SPI.begin(sck, miso, mosi, cs);
+  if (!SD.begin(cs)) {
     Serial.println("ERROR: SD card not found!");
-    while (!SD.begin(SD_CS));
+    while (!SD.begin(cs));
   }
   Serial.println("INFO: SD Card found! Initilizing...");
   initializeSD();
