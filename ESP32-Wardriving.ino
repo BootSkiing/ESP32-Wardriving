@@ -80,7 +80,7 @@ void initializeSD() { // create new CSV file and add WiGLE headers
   File logFile = SD.open(logFileName, FILE_WRITE);
   Serial.println("INFO: Created " + logFileName);
   if (logFile) {
-    logFile.println("WigleWifi-1.6,appRelease=1.0,model=ESP-WROOM-32,release=1.0,device=BirdUP,display=,board=ESP-32,brand=espressif,star=Sol,body=4,subBody=0")
+    logFile.println("WigleWifi-1.6,appRelease=1.0,model=ESP-WROOM-32,release=1.0,device=BirdUP,display=,board=ESP-32,brand=espressif,star=Sol,body=4,subBody=0");
     logFile.println("MAC,SSID,AuthMode,FirstSeen,Channel,Frequency,RSSI,CurrentLatitude,CurrentLongitude,AltitudeMeters,AccuracyMeters,RCOIs,MfgrId,Type");
   }
   logFile.close();
