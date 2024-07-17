@@ -14,7 +14,7 @@ char currentTime[5];
 String logFileName = "";
 int networks = 0;
 
-// fill out these pins and set it up and stuff (SPI)
+// SD REader pins
 #define REASSIGN_PINS
 int sck = 18;
 int miso = 19;
@@ -73,15 +73,15 @@ void loop() {
 }
 
 void initializeSD() { // create new CSV file and add WiGLE headers
-  int i = 0; logFileName = "log0.csv";
+  int i = 0; logFileName = "/log0.csv";
   while (SD.exists(logFileName)) {
-    i++; logFileName = "log" + String(i) + ".csv";
+    i++; logFileName = "/log" + String(i) + ".csv";
   }
   File logFile = SD.open(logFileName, FILE_WRITE);
   Serial.println("INFO: Created " + logFileName);
   if (logFile) {
-    logFile.println("WigleWifi-1.4,appRelease=2.53,model=D1-Mini-Pro,release=0.0.0,device=NetDash,display=SSD1306,board=ESP8266,brand=Wemos");
-    logFile.println("MAC,SSID,AuthMode,FirstSeen,Channel,RSSI,CurrentLatitude,CurrentLongitude,AltitudeMeters,AccuracyMeters,Type");
+    logFile.println("WigleWifi-1.6,appRelease=1.0,model=ESP-WROOM-32,release=1.0,device=BirdUP,display=,board=ESP-32,brand=espressif,star=Sol,body=4,subBody=0")
+    logFile.println("MAC,SSID,AuthMode,FirstSeen,Channel,Frequency,RSSI,CurrentLatitude,CurrentLongitude,AltitudeMeters,AccuracyMeters,RCOIs,MfgrId,Type");
   }
   logFile.close();
 }
@@ -111,22 +111,25 @@ void lookForNetworks() {
         Serial.println("INFO:   " + enc + ", " + bssid);
 
         File logFile = SD.open(logFileName, FILE_WRITE);
-        logFile.print(bssid);  logFile.print(',');
-        logFile.print(ssid); logFile.print(',');
-        logFile.print(enc); logFile.print(',');
-        logFile.print(year());   logFile.print('-');
+        logFile.print(bssid);  logFile.print(',');          // BSSID
+        logFile.print(ssid); logFile.print(',');            // SSID
+        logFile.print(enc); logFile.print(',');             // Capabilities
+        logFile.print(year());   logFile.print('-');        // First timestamp seen
         logFile.print(month());  logFile.print('-');
         logFile.print(day());    logFile.print(' ');
         logFile.print(hour());   logFile.print(':');
         logFile.print(minute()); logFile.print(':');
         logFile.print(second()); logFile.print(',');
-        logFile.print(WiFi.channel(i)); logFile.print(',');
-        logFile.print(WiFi.RSSI(i)); logFile.print(',');
-        logFile.print(tinyGPS.location.lat(), 6); logFile.print(',');
-        logFile.print(tinyGPS.location.lng(), 6); logFile.print(',');
-        logFile.print(tinyGPS.altitude.meters(), 1); logFile.print(',');
-        logFile.print(tinyGPS.hdop.value(), 1); logFile.print(',');
-        logFile.println("WIFI");
+        logFile.print(WiFi.channel(i)); logFile.print(','); // Channel
+        logFile.print(',');                                 // Frequency
+        logFile.print(WiFi.RSSI(i)); logFile.print(',');    // RSSI
+        logFile.print(tinyGPS.location.lat(), 6); logFile.print(',');   // Latitude
+        logFile.print(tinyGPS.location.lng(), 6); logFile.print(',');   // Longitude
+        logFile.print(tinyGPS.altitude.meters(), 1); logFile.print(',');// Altitude
+        logFile.print(tinyGPS.hdop.value(), 1); logFile.print(',');     // Accuracy
+        logFile.print(',');     // RCOIs
+        logFile.print(',');     // MfgrId
+        logFile.println("WIFI");// Type
         logFile.close();
       }
     }
