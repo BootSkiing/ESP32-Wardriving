@@ -1,42 +1,36 @@
-# ESP8266 Wardriving
-A compilation of scripts and resources for wardriving on the [ESP8266 WiFi microcontroller](https://www.espressif.com/en/products/socs/esp8266), including data visualization tools in Jupyter Notebook.
+# ESP32-Wardriving
+ESP32 wardriving project, forked from Hak5's ESP8266 wardriver. See ESP32 documentation [here](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/).
 
 Documentation on this page is still in development.
 
-## Components
-Any ESP8266-based board should work with the basic required components, but the D1 mini form factor is highly recommended since using modules (such as for SD logging + battery management) can be done using plug-and-play hardware in a small footprint. All linked components are D1 mini compatible. 
-
-**Required Components:**
-| Component | Purpose |
+## Components List
+| Component | Notes |
 | --- | --- |
-| ESP8266 | Gather WiFi data & control hardware modules
-| SD Reader | Store data that we can analyze with WiGLE / Python |
-| GPS Module | Grab geolocation data + timestamp |
+| ESP32 | The brains of the operation + it can speak WiFi. I went with the ESP-WROOM-32 model |
+| GPS Module | Gathers location data. Talks to the ESP32 over serial UART |
+| SD Reader + Card | Stores relavant data as a csv that we can upload to WiGLE |
 
-**Optional Components:**
-| Component | Purpose | 
-| --- | --- |
-| 128x64 OLED | Get a visual display of WiFi data being captured |
-| LiPo Battery | Power your ESP8266 for portable applications |
-| Battery Module | Manage power for your ESP8266 w/ a LiPo battery |
-| 100K Ω Resistor | Optional to read in battery level w/ the D1 Mini |
-   
+
 ## Hardware Setup
-
-**SD Reader Module** 
-| SD Reader Pin | ESP8266 GPIO | D1 Mini Pin |
-| --- | --- | --- |
-| MISO | GPIO12 | D6 |
-| MOSI | GPIO13 | D7 |
-| SCK | GPIO14 | D5 |
-| CS | GPIO15 | D8 |
+Always double check your pin layouts!! Chances are your boards are slightly different than mine.
 
 **GPS Module** 
-| GPS Pin | ESP8266 GPIO | D1 Mini Pin |
-| --- | --- | --- |
-| TX | GPIO2 | D4 |
-| RX | GPIO0 | D3 |
+| GPS Pin | ESP32 Pin (Purpose)
+| --- | --- |
+| VCC | 1 (3.3v)
+| RX | 28 (TX)
+| TX | 27 (RX)
+| GND | 32 (GND)
 
-## Data Visualization Scripts
+**SD Reader Module** 
+| SD Reader Pin | ESP32 Pin (Purpose)
+| --- | --- |
+| GND | 38 (GND)
+| VCC | 19 (5v)
+| MISO | 31 (MISO)
+| MOSI | 37 (MOSI)
+| SCK | 30 (SCK)
+| CS | 29 (SS)
 
-Data Visualization Tutorial: https://www.youtube.com/watch?v=pFHUPs51CRQ
+note: my SD card reader wasn't working for the longest time. I had to read the Amazon reviews to learn that it actually requres 5v, not the stated 3.3v
+
