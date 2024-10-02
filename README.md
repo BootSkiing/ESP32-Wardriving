@@ -34,3 +34,5 @@ Always double check your pin layouts!! Chances are your boards are slightly diff
 
 note: my SD card reader wasn't working for the longest time. I had to read the Amazon reviews to learn that it actually requres 5v, not the stated 3.3v
 
+![Flipper Zero dbugging serial UART connections](wardriver-flipper.jpg)
+
